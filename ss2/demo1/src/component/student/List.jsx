@@ -1,94 +1,81 @@
-import React from "react";
+
+import React, {useCallback, useEffect, useState} from "react";
 import {getAll} from "../../service/studentService.js";
-import DeleteModal from "./DeleteModal.jsx";
+import DeleteComponent from "./Delete.jsx";
+import Add from "./Add.jsx";
 
-class List extends React.Component{
-    constructor(props) {
-        console.log("----init")
-        super(props);
 
-        this.state = {
-            studentList:[],
-            showModal: false,
-            deleteStudent :null,
-            reloading :false
-        }
+const List = ()=>{
 
-    }
+     const [studentList, setStudentList]=  useState([]);
+     const [showModal, setShowModal] = useState(false);
+     const [deleteStudent, setDeleteStudent] = useState(null);
+     const [reloading, setReloading] = useState(false);
 
-    handleReloading = ()=>{
-        this.setState({
-            studentList: [...getAll()]
-        })
-    }
+     useEffect(()=>{
+         console.log("----------useEffect------------")
+         setStudentList([...getAll()])
+     },[reloading]);
 
-    closeModal = ()=>{
-        this.setState({
-            showModal: false
-        })
-    }
+     useEffect(()=>{
 
-    handleShowModal = (student)=>{
-        this.setState({
-            showModal: true,
-            deleteStudent:student
-        })
-    }
+         return ()=>{
+             console.log("logic cần thực hiện trước khi component unmouting");
+             /////
+         }
+     },[])
 
-    componentDidMount() {
-        console.log("-------didMount--------");
-        this.setState({
-            studentList: [...getAll()]
-        });
-    };
-    // componentDidUpdate(prevProps, prevState, snapshot) {
-    //     if (prevState.reloading!=this.state.reloading){
-    //         this.setState({
-    //             studentList: [...getAll()],
-    //             reloading: false
-    //         })
-    //     }
-    // }
+     const handleShowModal=(student)=>{
+         setShowModal(true);
+         setDeleteStudent(student);
+     }
+     const closeModal = useCallback(()=>{
+         setShowModal(false);
+     },[]);
 
-    render() {
-        return (
-            <>
-                {console.log("---------------list-render----------")}
-                <h2>Danh sách sinh viên</h2>
-                <table className={'table table-dark'}>
-                    <thead>
-                    <tr>
-                        <th>STT</th>
-                        <th>ID</th>
-                        <th>Name</th>
-                        <th>Delete</th>
-                    </tr>
-                    </thead>
-                    <tbody>
-                    {
-                        this.state.studentList.map((student, i) => (
-                            <tr key={student.id}>
-                                <td>{i + 1}</td>
-                                <td>{student.id}</td>
-                                <td>{student.name}</td>
-                                <td>
-                                    <button className={'btn btn-sm btn-danger'} onClick={()=>{
-                                        this.handleShowModal(student)
-                                    }}>Delete</button>
-                                </td>
-                            </tr>
-                        ))
-                    }
-                    </tbody>
-                </table>
 
-                <DeleteModal showModal ={this.state.showModal}
-                             student = {this.state.deleteStudent}
-                             closeModal={this.closeModal}
-                             handleReloading = {this.handleReloading}
-                />
-            </>
-        )
-    }
+     const handleReloading = useCallback(()=>{
+         setReloading(pre=>!pre);
+     },[])
+
+     return (
+        <>
+            {console.log("---------------list-render----------")}
+            <h2>Danh sách sinh viên</h2>
+            <Add handleReloading = {handleReloading}/>
+            <table className={'table table-dark'}>
+                <thead>
+                <tr>
+                    <th>STT</th>
+                    <th>ID</th>
+                    <th>Name</th>
+                    <th>Delete</th>
+                </tr>
+                </thead>
+                <tbody>
+                {
+                    studentList.map((student, i) => (
+                        <tr key={student.id}>
+                            <td>{i + 1}</td>
+                            <td>{student.id}</td>
+                            <td>{student.name}</td>
+                            <td>
+                                <button className={'btn btn-sm btn-danger'} onClick={()=>{
+                                    handleShowModal(student)
+                                }}>Delete</button>
+                            </td>
+                        </tr>
+                    ))
+                }
+                </tbody>
+            </table>
+
+            <DeleteComponent showModal ={showModal}
+                         student = {deleteStudent}
+                         closeModal={closeModal}
+                         handleReloading = {handleReloading}
+            />
+        </>
+    )
 }
 export default List;
