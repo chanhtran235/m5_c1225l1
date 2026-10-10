@@ -3,6 +3,7 @@ import React, {useCallback, useEffect, useState} from "react";
 import {getAll} from "../../service/studentService.js";
 import DeleteComponent from "./Delete.jsx";
 import Add from "./Add.jsx";
+import {Link} from "react-router-dom";
 
 
 const List = ()=>{
@@ -42,13 +43,14 @@ const List = ()=>{
         <>
             {console.log("---------------list-render----------")}
             <h2>Danh sách sinh viên</h2>
-            <Add handleReloading = {handleReloading}/>
+            <Link to={'/dashboard/student/add'}>Thêm mới</Link>
             <table className={'table table-dark'}>
                 <thead>
                 <tr>
                     <th>STT</th>
                     <th>ID</th>
                     <th>Name</th>
+                    <th>Detail</th>
                     <th>Delete</th>
                 </tr>
                 </thead>
@@ -59,6 +61,9 @@ const List = ()=>{
                             <td>{i + 1}</td>
                             <td>{student.id}</td>
                             <td>{student.name}</td>
+                            <td>
+                                <Link to={`/dashboard/student/detail/${student.id}`}>Detail</Link>
+                            </td>
                             <td>
                                 <button className={'btn btn-sm btn-danger'} onClick={()=>{
                                     handleShowModal(student)

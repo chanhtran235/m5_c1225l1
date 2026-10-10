@@ -26,6 +26,11 @@ export function deleteById(id){
         }
     }
 }
+export function findById(id){
+
+    return studentList.find(student =>student.id==id)
+}
 export function addNew(student){
     studentList.push(student);
+    return true;
 }

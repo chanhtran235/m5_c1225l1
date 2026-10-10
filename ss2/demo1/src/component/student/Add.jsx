@@ -1,27 +1,54 @@
 import {useRef} from "react";
 import {addNew, getAll} from "../../service/studentService.js";
+import {useNavigate} from "react-router-dom";
+import {toast} from "react-toastify";
+import {ErrorMessage, Field, Form, Formik} from "formik";
+import * as Yup from "yup";
 
-const Add = ({handleReloading}) => {
-    // useRef;
-    const idRef = useRef(null);
-    const nameRef = useRef(null);
-    const handleAdd = ()=>{
-        const newStudent = {
-            id: idRef.current.value,
-            name:nameRef.current.value
+const validator = Yup.object({
+    id:Yup.number().required("Yêu nhâp id").min(1,"Id phải dương") ,
+    name: Yup.string().required("Yêu cầu nhập tên")
+        .matches(/^[A-Z][a-z]*(\s[A-Z][a-z]*)+$/,"Tên không đúng định dạng!")
+})
+
+const Add = () => {
+    const navigate = useNavigate()
+    const handleAdd = (value)=>{
+        console.log( value)
+        let isSuccess = addNew(value);
+        if (isSuccess){
+            toast.success("Thêm mới thành công");
+        }else {
+            toast.error("Thêm mới thất bại");
         }
-        idRef.current.value = "";
-        nameRef.current.value = "";
-        addNew(newStudent);
-        handleReloading();
+        navigate("/dashboard/student");
     }
     return (
-        <div className={'w-50'}>
-            <h3>Thêm mới</h3>
-            <input ref={idRef} placeholder={'Nhập mã'}/>
-            <input ref={nameRef} placeholder={'Nhập tên'}/>
-            <button onClick={handleAdd} className={'btn-success btn-sm'}>Lưu</button>
-        </div>
+        <>
+            <Formik initialValues={{
+                id:"",
+                name:""
+            }}
+                    onSubmit={handleAdd}
+                    validationSchema={validator}
+            >
+              <Form>
+                  <div>
+                      <p>ID</p>
+                      <Field type ="text" name = "id"/>
+                      <ErrorMessage name={'id'} className={'text-danger'} component={'small'}/>
+                  </div>
+                  <div>
+                      <p>Name</p>
+                      <Field type ="text" name = "name"/>
+                      <ErrorMessage name={'name'} className={'text-danger'} component={'small'}/>
+
+                  </div>
+                  <button type={"submit"}>Thêm mới</button>
+              </Form>
+            </Formik>
+        </>
+
     )
 }
 
