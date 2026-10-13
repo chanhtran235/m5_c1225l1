@@ -13,18 +13,21 @@ const List = ()=>{
      const [deleteStudent, setDeleteStudent] = useState(null);
      const [reloading, setReloading] = useState(false);
 
-     useEffect(()=>{
-         console.log("----------useEffect------------")
-         setStudentList([...getAll()])
+     useEffect( ()=>{
+
+         console.log("----------useEffect------------");
+         const fetData = async ()=>{
+             const list = await getAll();
+             setStudentList(list);
+         }
+         fetData();
+
+         // getAll().then(data =>{
+         //     setStudentList(data);
+         // })
+
      },[reloading]);
 
-     useEffect(()=>{
-
-         return ()=>{
-             console.log("logic cần thực hiện trước khi component unmouting");
-             /////
-         }
-     },[])
 
      const handleShowModal=(student)=>{
          setShowModal(true);
@@ -50,6 +53,7 @@ const List = ()=>{
                     <th>STT</th>
                     <th>ID</th>
                     <th>Name</th>
+                    <th>Class name</th>
                     <th>Detail</th>
                     <th>Delete</th>
                 </tr>
@@ -61,6 +65,7 @@ const List = ()=>{
                             <td>{i + 1}</td>
                             <td>{student.id}</td>
                             <td>{student.name}</td>
+                            <td>{student.classCG?.name}</td>
                             <td>
                                 <Link to={`/dashboard/student/detail/${student.id}`}>Detail</Link>
                             </td>

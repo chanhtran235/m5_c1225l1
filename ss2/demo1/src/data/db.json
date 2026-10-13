@@ -1,0 +1,43 @@
+{
+  "students": [
+    {
+      "name": "Hà",
+      "classCG": {
+        "id": 1,
+        "name": "C10"
+      },
+      "id": 3
+    },
+    {
+      "name": "Tuan To",
+      "classCG": {
+        "id": 3,
+        "name": "C12"
+      },
+      "id": 5
+    },
+    {
+      "name": "Hai Truong",
+      "classCG": {
+        "id": 2,
+        "name": "C11"
+      },
+      "id": 6
+    }
+  ],
+  "classes": [
+    {
+      "id": 1,
+      "name": "C10"
+    },
+    {
+      "id": 2,
+      "name": "C11"
+    },
+    {
+      "id": 3,
+      "name": "C12"
+    }
+  ],
+  "accounts": []
+}

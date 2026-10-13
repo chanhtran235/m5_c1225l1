@@ -1,36 +1,44 @@
+import axios from "axios";
 
-const studentList = [
-    {
-        id:1,
-        name:"chánh"
-    },
-    {
-        id:2,
-        name:"tiến"
-    },
-    {
-        id:3,
-        name:"hải"
+const API_URL = import.meta.env.VITE_API_BASE_URL;
+export async  function getAll(){
+    try{
+        const  res = await axios.get(`${API_URL}/students`);
+        return res.data;
+    }catch (e){
+        console.log("lỗi call api");
+        console.log(e)
+        return []
     }
-];
 
-export function getAll(){
-
-    return [...studentList];
 }
-export function deleteById(id){
-    for (let i = 0; i <studentList.length ; i++) {
-        if (studentList[i].id==id){
-            studentList.splice(i,1);
-            break;
-        }
+export async function deleteById(id){
+    try{
+        const  res = await axios.delete(`${API_URL}/students/${id}`);
+        return res.status==200;
+    }catch (e){
+        console.log("lỗi call api");
+        console.log(e)
+        return []
     }
 }
-export function findById(id){
-
-    return studentList.find(student =>student.id==id)
+export async function findById(id){
+    try{
+        const  res = await axios.get(`${API_URL}/students/${id}`);
+        return res.data;
+    }catch (e){
+        console.log("lỗi call api");
+        console.log(e)
+        return []
+    }
 }
-export function addNew(student){
-    studentList.push(student);
-    return true;
+export async function addNew(student){
+    try{
+        const  res = await axios.post(`${API_URL}/students`,student);
+        return res.status==201
+    }catch (e){
+        console.log("lỗi call api");
+        console.log(e)
+        return false
+    }
 }

@@ -1,6 +1,7 @@
 import {Button, Modal} from "react-bootstrap";
 import {deleteById, getAll} from "../../service/studentService.js";
 import React from "react";
+import {toast} from "react-toastify";
 
 
 const Delete = ({showModal, handleReloading, student, closeModal}) => {
@@ -9,11 +10,12 @@ const Delete = ({showModal, handleReloading, student, closeModal}) => {
         closeModal();
     }
 
-    const handleDelete = () => {
-        deleteById(student.id);
-        console.log(getAll());
+    const handleDelete =  async () => {
+        let isDelete =await deleteById(student.id);
         handleReloading();
         closeModal();
+        isDelete?toast.success("Xoá thành công"): toast.error("Xoá thất bại")
+
     }
     return (
         <>

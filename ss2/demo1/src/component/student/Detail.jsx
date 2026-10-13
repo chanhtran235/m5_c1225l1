@@ -6,7 +6,10 @@ const Detail = ()=>{
     const {id} = useParams();
     const [student, setStudent] = useState(null);
     useEffect(()=>{
-        setStudent(findById(id))
+        findById(id).then(student=>{
+            setStudent(student)
+        })
+
     },[])
     return(
         <>
