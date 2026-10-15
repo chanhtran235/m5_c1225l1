@@ -11,6 +11,8 @@ import List from "./component/student/List.jsx";
 import Add from "./component/student/Add.jsx";
 import {ToastContainer} from "react-toastify";
 import Detail from "./component/student/Detail.jsx";
+import Login from "./component/user/Login.jsx";
+import Info from "./component/user/Info.jsx";
 
 function App() {
 
@@ -20,6 +22,8 @@ function App() {
             <Routes>
                 <Route path={'/home'} element={<Home/>}/>
                 <Route path={'/about'} element={<About/>}/>
+                <Route path={'/login'} element={<Login/>}/>
+                <Route path={'/info'} element={<Info/>}/>
                 <Route path={'/dashboard'} element={<Dashboard/>}>
                     <Route path={'student'} element={<List/>}/>
                     <Route path={'student/add'} element={<Add/>}/>
